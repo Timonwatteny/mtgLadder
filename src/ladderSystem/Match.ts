@@ -3,26 +3,34 @@ import MatchEndState from "./MatchEndState";
 
 export default class Match {
 	constructor(
-		private player1: Player,
-		private player2: Player,
+		private _player1: Player,
+		private _player2: Player,
 	) {
-		player1.isPlaying = true;
-		player2.isPlaying = true;
+		_player1.isPlaying = true;
+		_player2.isPlaying = true;
+	}
+
+	get player1() {
+		return this._player1;
+	}
+
+	get player2() {
+		return this._player2;
 	}
 
 	public finish(matchEndState: MatchEndState) {
-		this.player1.isPlaying = false;
-		this.player2.isPlaying = false;
+		this._player1.isPlaying = false;
+		this._player2.isPlaying = false;
 
 		if (matchEndState.isDraw()) {
-			this.player1.draw();
-			this.player2.draw();
-		} else if (this.player1 == matchEndState.winner) {
-			this.player1.win();
-			this.player2.lose();
+			this._player1.draw();
+			this._player2.draw();
+		} else if (this._player1 == matchEndState.winner) {
+			this._player1.win();
+			this._player2.lose();
 		} else {
-			this.player1.lose();
-			this.player2.win();
+			this._player1.lose();
+			this._player2.win();
 		}
 	}
 }

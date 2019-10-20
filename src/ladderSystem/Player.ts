@@ -4,8 +4,12 @@ export default class Player {
 	private _score = 0;
 
 	constructor(
-		private name: string
+		private _name: string
 	) {
+	}
+
+	public get name() {
+		return this._name;
 	}
 
 	public get isPlaying() {
