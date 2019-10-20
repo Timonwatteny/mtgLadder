@@ -3,8 +3,8 @@ import Player from "./Player";
 
 export default class LadderSystem {
 
-	private _matches: Set<Match> = new Set<Match>();
-	private players: Set<Player> = new Set<Player>();
+	private _matches = new Set<Match>();
+	private players = new Set<Player>();
 
 	constructor() {
 	}
@@ -17,23 +17,26 @@ export default class LadderSystem {
 		this.players.add(player);
 	}
 
-	public generateFirstMatches() {
-		// TODO:
-		const i = this.players.size;
+	public updateMatches() {
+		this._matches = new Set<Match>();
 
-		for (const player of this.sortOnScore()) {
-            
+		let lastPlayer: Player | undefined = undefined;
+
+		for (const player of this.playersSortedByScore()) {
+			if (lastPlayer) {
+				this.matches.add(new Match(lastPlayer, player));
+				lastPlayer = undefined;
+			} else {
+				lastPlayer = player;
+			}
 		}
 
-		// pseudo code ;p
-		// if(/* eentje over */) {
-		// 	over.win();
-		// }
-
-		//const m1 = new Match(, );
+		// if there's a single unmached player
+		if (lastPlayer)
+			lastPlayer.win();
 	}
 
-	public sortOnScore() {
+	public playersSortedByScore() {
 		return Array.from(this.players)
 			.sort((p1: Player, p2: Player) => {
 				if (p1.score === p2.score)
