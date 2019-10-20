@@ -1,15 +1,19 @@
 import Match from "./Match";
 import Player from "./Player";
 
-class LadderSystem {
+export default class LadderSystem {
 
-	private matches: Set<Match> = new Set<Match>();
+	private _matches: Set<Match> = new Set<Match>();
 	private players: Set<Player> = new Set<Player>();
 
 	constructor() {
 	}
 
-	public addUser(player: Player) {
+	public get matches() {
+		return this._matches
+	}
+
+	public addPlayer(player: Player) {
 		this.players.add(player);
 	}
 
