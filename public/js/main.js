@@ -1,10 +1,16 @@
 (async function() {
-	await addTournament("yeet");
-	await addPlayer("yeet", "louis");
-	await addPlayer("yeet", "louis");
+	await addTournament("test");
 	showTournaments(await getTournamets());
+	
+	await addPlayer("test", "louis");
+	await addPlayer("test", "timon");
+	showPlayers(await getPlayers("test"));
 
-	showPlayers(await getPlayers("yeet"));
+	newRound("test");
+	showMatches(await getMatches("test"));
+
+	finishMatch("test", "louis");
+	showPlayers(await getPlayers("test"));
 })()
 
 function showTournaments(tournaments) {

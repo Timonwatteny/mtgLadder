@@ -16,7 +16,7 @@ function addTournament(name) {
 }
 
 function addPlayer(tournamentName, playerName) {
-	return fetch(`apiRoot/${tournamentName}/add/`, {
+	return fetch(`${apiRoot}/${tournamentName}/add/`, {
 		method: 'POST',
 		body: JSON.stringify({ name: playerName }),
 		headers: {
@@ -26,17 +26,17 @@ function addPlayer(tournamentName, playerName) {
 }
 
 function getPlayers(tournamentName) {
-	return fetch(`apiRoot/${tournamentName}/players/`)
+	return fetch(`${apiRoot}/${tournamentName}/players/`)
 		.then(res => res.json());
 }
 
 function getMatches(tournamentName) {
-	return fetch(`apiRoot/${tournamentName}/matches/`)
+	return fetch(`${apiRoot}/${tournamentName}/matches/`)
 		.then(res => res.json());
 }
 
 function finishMatch(tournamentName, playerName, isDraw = false) {
-	return fetch(`apiRoot/${tournamentName}/add/`, {
+	return fetch(`${apiRoot}/${tournamentName}/finish/`, {
 		method: 'POST',
 		body: JSON.stringify({
 			winner: playerName,
@@ -49,5 +49,5 @@ function finishMatch(tournamentName, playerName, isDraw = false) {
 }
 
 function newRound(tournamentName) {
-	return fetch(`apiRoot/${tournamentName}/newRound/`)
+	return fetch(`${apiRoot}/${tournamentName}/newRound/`)
 }
