@@ -3,7 +3,7 @@ import tournaments from "./api/tournaments";
 
 const app = express();
 
-app.use("/public", express.static(__dirname + "/../src/public/"));
+app.use("/public", express.static(__dirname + "/../public/"));
 
 app.use(express.json());
 
