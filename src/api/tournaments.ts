@@ -9,18 +9,13 @@ const tournaments = new Map<string, LadderSystem>();
 
 const test = new LadderSystem();
 
-const p1 = new Player("p1");
-const p2 = new Player("p2");
-const p3 = new Player("p2");
-p2.win();
-p3.win();
-p3.win();
+const p1 = new Player("louis");
+const p2 = new Player("timon");
+const p3 = new Player("tiemen");
 
 test.addPlayer(p1);
 test.addPlayer(p2);
 test.addPlayer(p3);
-
-test.updateMatches();
 
 tournaments.set("test", test);
 
