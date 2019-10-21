@@ -65,9 +65,9 @@ export default class LadderSystem {
 				if (p1.score === p2.score)
 					return 0;
 				else if (p1.score > p2.score)
-					return 1;
-				else
 					return -1;
+				else
+					return 1;
 			});
 	}
 }

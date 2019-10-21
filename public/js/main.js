@@ -2,6 +2,12 @@
 	showTournaments(await getTournamets());
 })()
 
+async function showDetails(tournament) {
+	showConfig(tournament);
+	showMatches(await getMatches(tournament), tournament);
+	showPlayers(await getPlayers(tournament));
+}
+
 function showTournaments(tournaments) {
 	const ul = document.createElement("ul");
 
@@ -14,10 +20,7 @@ function showTournaments(tournaments) {
 		const button = document.createElement("button");
 		button.innerText = "Details";
 
-		button.addEventListener("click", async () => {
-			showMatches(await getMatches(tournament), tournament);
-			showPlayers(await getPlayers(tournament));
-		});
+		button.addEventListener("click", () => showDetails(tournament));
 
 		li.appendChild(text);
 		li.appendChild(button);
@@ -28,6 +31,25 @@ function showTournaments(tournaments) {
 	document.querySelector("#tournaments").appendChild(ul);
 
 	return ul;
+}
+
+function showConfig(tournament) {
+	const config = document.createElement("div");
+
+	const roundButton = document.createElement("button");
+	roundButton.innerText = "New Round";
+	roundButton.addEventListener("click", () => {
+		newRound(tournament);
+		showDetails(tournament);
+	});
+
+	config.appendChild(roundButton);
+
+	const container = document.querySelector("#config");
+	container.innerHTML = "";
+	container.appendChild(config);
+
+	return config;
 }
 
 function showPlayers(players) {
@@ -67,16 +89,19 @@ function showMatches(matches, tournament) {
 		player1Item.innerText = `${_player1._name} Wins`;
 		player1Item.addEventListener("click", () => {
 			finishMatch(tournament, _player1._name);
+			showDetails(tournament);
 		})
 		const drawItem = document.createElement("button");
 		drawItem.innerText = "Draw"
 		drawItem.addEventListener("click", () => {
 			finishMatch(tournament, _player1._name, true);
+			showDetails(tournament);
 		})
 		const player2Item = document.createElement("button");
 		player2Item.innerText = `${_player2._name} Wins`;
 		player2Item.addEventListener("click", () => {
 			finishMatch(tournament, _player2._name);
+			showDetails(tournament);
 		})
 
 		li.appendChild(player1Item);
