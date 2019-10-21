@@ -1,5 +1,12 @@
 (async function () {
 	showTournaments(await getTournamets());
+
+	document.querySelector("#new-tournament").addEventListener("submit", async e => {
+		e.preventDefault();
+		await addTournament(e.target.name.value);
+		showTournaments(await getTournamets());
+	})
+
 })()
 
 async function showDetails(tournament) {
@@ -28,7 +35,9 @@ function showTournaments(tournaments) {
 		ul.appendChild(li);
 	}
 
-	document.querySelector("#tournaments").appendChild(ul);
+	const conatiner = document.querySelector("#tournaments");
+	conatiner.innerHTML = "";
+	conatiner.appendChild(ul);
 
 	return ul;
 }
@@ -38,12 +47,31 @@ function showConfig(tournament) {
 
 	const roundButton = document.createElement("button");
 	roundButton.innerText = "New Round";
-	roundButton.addEventListener("click", () => {
-		newRound(tournament);
+	roundButton.addEventListener("click", async () => {
+		await newRound(tournament);
 		showDetails(tournament);
 	});
 
+	const form = document.createElement("form");
+
+	const input = document.createElement("input");
+	input.type = "text";
+	input.name = "name";
+	input.placeholder = "name";
+
+	const button = document.createElement("button");
+	button.innerText = "Add Player";
+
+	form.appendChild(input);
+	form.appendChild(button);
+	form.addEventListener("submit", async e => {
+		e.preventDefault();
+		await addPlayer(tournament, e.target.name.value);
+		showDetails(tournament);
+	})
+
 	config.appendChild(roundButton);
+	config.appendChild(form);
 
 	const container = document.querySelector("#config");
 	container.innerHTML = "";
