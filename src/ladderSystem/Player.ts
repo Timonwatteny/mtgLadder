@@ -1,3 +1,5 @@
+import PointConfig from "./PointsConfig";
+
 export default class Player {
 
 	public _isPlaying = false;
@@ -24,15 +26,15 @@ export default class Player {
 		return this._score;
 	}
 
-	public win() {
-		this._score += 3;
+	public win(pointConfig: PointConfig) {
+		this._score += pointConfig.win;
 	}
 
-	public draw() {
-		this._score += 1;
+	public draw(pointConfig: PointConfig) {
+		this._score += pointConfig.draw;
 	}
 
-	public lose() {
-		this._score += 0;
+	public lose(pointConfig: PointConfig) {
+		this._score += pointConfig.lose;
 	}
 }

@@ -2,22 +2,11 @@ import { Router } from "express";
 import LadderSystem from "../ladderSystem/LadderSystem";
 import Player from "../ladderSystem/Player";
 import MatchEndState from "../ladderSystem/MatchEndState";
+import PointConfig from "../ladderSystem/PointsConfig";
 
 const router = Router();
 
 const tournaments = new Map<string, LadderSystem>();
-
-const test = new LadderSystem();
-
-const p1 = new Player("louis");
-const p2 = new Player("timon");
-const p3 = new Player("tiemen");
-
-test.addPlayer(p1);
-test.addPlayer(p2);
-test.addPlayer(p3);
-
-tournaments.set("test", test);
 
 // get all tournament names
 router.get("/", (req, res) => {
@@ -28,11 +17,21 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
 	const tournamentName = req.body.name;
 
-	tournaments.set(tournamentName, new LadderSystem());
+	if (
+		tournamentName &&
+		tournaments.get(tournamentName) === undefined &&
+		tournamentName !== ""
+	) {
+		tournaments.set(tournamentName, new LadderSystem(new PointConfig(3, 0, 1)));
 
-	console.log(`made new tournament ${tournamentName}`);
+		console.log(`made new tournament ${tournamentName}`);
 
-	res.status(200).send("");
+		res.status(200);
+	} else {
+		res.status(400);
+	}
+
+	res.send("");
 });
 
 // adding a player
@@ -44,7 +43,12 @@ router.post("/:tournament/add", (req, res) => {
 
 	console.log(`adding new player ${playerName} to ${tournamentName}`);
 
-	if (tournament) {
+	if (
+		tournament &&
+		playerName &&
+		tournament.getPlayer(playerName) === undefined &&
+		playerName !== ""
+	) {
 		tournament.addPlayer(new Player(playerName));
 		res.status(200);
 	} else {
@@ -80,7 +84,7 @@ router.post("/:tournament/finish", (req, res) => {
 	if (tournament) {
 		const winner = req.body.winner;
 		const isDraw = req.body.isDraw;
-		
+
 		const match = tournament.getMatch(winner);
 		const player = tournament.getPlayer(winner);
 
