@@ -19,18 +19,24 @@ export default class Match {
 	}
 
 	public finish(matchEndState: MatchEndState) {
-		this._player1.isPlaying = false;
-		this._player2.isPlaying = false;
 
-		if (matchEndState.isDraw()) {
-			this._player1.draw();
-			this._player2.draw();
-		} else if (this._player1 == matchEndState.winner) {
-			this._player1.win();
-			this._player2.lose();
-		} else {
-			this._player1.lose();
-			this._player2.win();
+		if (
+			this._player1.isPlaying &&
+			this._player2.isPlaying
+		) {
+			this._player1.isPlaying = false;
+			this._player2.isPlaying = false;
+
+			if (matchEndState.isDraw()) {
+				this._player1.draw();
+				this._player2.draw();
+			} else if (this._player1 == matchEndState.winner) {
+				this._player1.win();
+				this._player2.lose();
+			} else {
+				this._player1.lose();
+				this._player2.win();
+			}
 		}
 	}
 }
