@@ -1,4 +1,4 @@
-class PointConfig {
+export default class PointConfig {
 	constructor(
 		private _win: number,
 		private _lose: number,

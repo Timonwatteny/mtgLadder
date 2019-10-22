@@ -2,6 +2,7 @@ import { Router } from "express";
 import LadderSystem from "../ladderSystem/LadderSystem";
 import Player from "../ladderSystem/Player";
 import MatchEndState from "../ladderSystem/MatchEndState";
+import PointConfig from "../ladderSystem/PointsConfig";
 
 const router = Router();
 
@@ -21,7 +22,7 @@ router.post("/", (req, res) => {
 		tournaments.get(tournamentName) === undefined &&
 		tournamentName !== ""
 	) {
-		tournaments.set(tournamentName, new LadderSystem());
+		tournaments.set(tournamentName, new LadderSystem(new PointConfig(3, 0, 1)));
 
 		console.log(`made new tournament ${tournamentName}`);
 

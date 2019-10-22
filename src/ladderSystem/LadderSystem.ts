@@ -1,5 +1,6 @@
 import Match from "./Match";
 import Player from "./Player";
+import PointConfig from "./PointsConfig";
 
 export default class LadderSystem {
 
@@ -8,7 +9,12 @@ export default class LadderSystem {
 	private playersByName = new Map<string, Player>();
 	private players = new Set<Player>();
 
-	constructor() {
+	private matchBuilder: (p1: Player, p2: Player) => Match;
+
+	constructor(
+		private pointConfig: PointConfig
+	) {
+		this.matchBuilder = Match.getBuilder(pointConfig);
 	}
 
 	public get matches() {
@@ -47,7 +53,7 @@ export default class LadderSystem {
 
 		for (const player of this.playersSortedByScore()) {
 			if (lastPlayer) {
-				this.addMatch(new Match(lastPlayer, player));
+				this.addMatch(this.matchBuilder(lastPlayer, player));
 				lastPlayer = undefined;
 			} else {
 				lastPlayer = player;
@@ -56,7 +62,7 @@ export default class LadderSystem {
 
 		// if there's a single unmached player
 		if (lastPlayer)
-			lastPlayer.win();
+			lastPlayer.win(this.pointConfig);
 	}
 
 	public playersSortedByScore() {
