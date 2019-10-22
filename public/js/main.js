@@ -25,6 +25,8 @@ function showTournaments(tournaments) {
 		text.innerText = tournament;
 
 		const button = document.createElement("button");
+		button.classList.add("btn");
+		button.classList.add("btn-dark")
 		button.innerText = "Details";
 
 		button.addEventListener("click", () => showDetails(tournament));
