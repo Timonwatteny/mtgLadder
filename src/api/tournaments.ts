@@ -8,6 +8,16 @@ const router = Router();
 
 const tournaments = new Map<string, LadderSystem>();
 
+// test data
+const defaultGame = new LadderSystem(new PointConfig(3, 0, 1));
+
+defaultGame.addPlayer(new Player("louis"));
+defaultGame.addPlayer(new Player("timon"));
+defaultGame.updateMatches();
+
+tournaments.set("default1", defaultGame);
+tournaments.set("default2", defaultGame);
+
 // get all tournament names
 router.get("/", (req, res) => {
 	res.json(Array.from(tournaments.keys()));

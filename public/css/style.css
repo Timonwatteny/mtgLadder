@@ -1,12 +1,51 @@
+@import url('https://fonts.googleapis.com/css?family=Liu+Jian+Mao+Cao&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Shadows+Into+Light&display=swap');
+
 body {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
     background-image: url(../images/https___magic.wizards.com_sites_mtg_files_images_wallpaper_Garruk-Cursed-Huntsman_ELD_2560x1600.jpg);
-    background-size: cover;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    padding: 3rem;
     
+}
+
+input {
+    padding-left: 1rem;
+    border-radius: 0.5rem;
+}
+
+main {
+    display: flex;
+}
+
+.tournament {
+    margin-top: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tournament span {
+    height: 100%;
+    line-height: 100%;
+    font-size: 1.3rem;
+}
+
+#tournaments ul {
+    margin-left: 0;
+    padding-left: 0;
 }
 
 main, nav {
     color:white;
+    font-family: 'Shadows Into Light', cursive;
+    /* font-family: 'Liu Jian Mao Cao', cursive; */
+    font-size: 2rem;
 }
+
 
 .hide {
     display: none;
@@ -14,4 +53,5 @@ main, nav {
 
 span {
     padding-right: 1rem;
+    font-size: 75%;
 }
