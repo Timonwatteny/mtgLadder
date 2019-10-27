@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+	<link href="../public/css/reset.css" rel="stylesheet" type="text/css">
 	<link href="../public/css/style.css" rel="stylesheet" type="text/css">
 	<link href="../public/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
@@ -13,32 +14,40 @@
 </head>
 
 <body>
-	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-		<a class="navbar-brand">Home</a>
-		<button class="btn btn-dark">Tournaments</button>
-	</nav>
-	<h1>a</h1>
-	<main>
+	<main class="container">
 		<!-- <div class="jumbotron">
 			<div class="container">
 				<h1 class="display-3">Tournament X</h1>
 			</div>
 		</div> -->
-		<div class="container">
-			<div class="row mt-3">
-				<form class="col-md-4" id="new-tournament">
-					<input type="text" placeholder="tournamentName" name="name">
-					<button  class="btn btn-dark">Add Tournament</button>
-				</form>
+		<!-- <main class="container"> -->
+		<div class="row">
+			<div class="">
+				<div class="row">
+					<form class="col-md-12" id="new-tournament">
+						<input type="text" placeholder="tournamentName" name="name">
+						<button class="btn btn-dark">Add Tournament</button>
+					</form>
+				</div>
 
-				<div class="col-md-4" id="tournaments"></div>
-				<div id="details">
+				<div class="col-md-5" id="tournaments">
+				</div>
+
+			</div>
+			<div class="ml-4">
+
+				<div class="hide" id="details">
+					<!-- <h2 id="playerTitle">Players</h2> -->
 					<div id="config"></div>
-					<div id="players"></div>
-					<div id="matches"></div>
+					<h2 id="matchesTitle" class="mt-2"><strong>Current Status:</strong></h2>
+					<div class="horizontal">
+						<div id="players"></div>
+						<div id="matches"></div>
+					</div>
 				</div>
 			</div>
 		</div>
+		<!-- </div> -->
 	</main>
 </body>
 

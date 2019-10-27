@@ -1,15 +1,18 @@
 (async function () {
 	showTournaments(await getTournamets());
+	showDetails("default1")
 
 	document.querySelector("#new-tournament").addEventListener("submit", async e => {
 		e.preventDefault();
 		await addTournament(e.target.name.value);
 		showTournaments(await getTournamets());
 	})
-
 })()
 
 async function showDetails(tournament) {
+	// WHOAAA SHIIIIT
+	document.getElementById("details").classList.remove("hide");
+
 	showConfig(tournament);
 	showMatches(await getMatches(tournament), tournament);
 	showPlayers(await getPlayers(tournament));
@@ -20,13 +23,13 @@ function showTournaments(tournaments) {
 
 	for (const tournament of tournaments) {
 		const li = document.createElement("li");
+		li.classList.add("tournament")
 
 		const text = document.createElement("span");
 		text.innerText = tournament;
 
 		const button = document.createElement("button");
-		button.classList.add("btn");
-		button.classList.add("btn-dark")
+		button.classList.add("btn", "btn-dark");
 		button.innerText = "Details";
 
 		button.addEventListener("click", () => showDetails(tournament));
@@ -47,13 +50,6 @@ function showTournaments(tournaments) {
 function showConfig(tournament) {
 	const config = document.createElement("div");
 
-	const roundButton = document.createElement("button");
-	roundButton.innerText = "New Round";
-	roundButton.addEventListener("click", async () => {
-		await newRound(tournament);
-		showDetails(tournament);
-	});
-
 	const form = document.createElement("form");
 
 	const input = document.createElement("input");
@@ -63,6 +59,7 @@ function showConfig(tournament) {
 
 	const button = document.createElement("button");
 	button.innerText = "Add Player";
+	button.classList.add("btn", "btn-dark", "ml-2");
 
 	form.appendChild(input);
 	form.appendChild(button);
@@ -72,7 +69,6 @@ function showConfig(tournament) {
 		showDetails(tournament);
 	})
 
-	config.appendChild(roundButton);
 	config.appendChild(form);
 
 	const container = document.querySelector("#config");
@@ -93,7 +89,12 @@ function showPlayers(players) {
 		const scoreItem = document.createElement("span");
 		scoreItem.innerText = _score;
 		const isPlayingItem = document.createElement("span");
-		isPlayingItem.innerText = _isPlaying;
+		if (_isPlaying) {
+			isPlayingItem.innerText = "Playing";
+		} else {
+			isPlayingItem.innerText = "Done";
+		}
+
 
 		li.appendChild(nameItem);
 		li.appendChild(scoreItem);
@@ -110,24 +111,38 @@ function showPlayers(players) {
 }
 
 function showMatches(matches, tournament) {
+
+	const roundButton = document.createElement("button");
+	roundButton.classList.add("btn", "btn-dark", "mb-2")
+	roundButton.innerText = "New Round";
+	roundButton.addEventListener("click", async () => {
+		await newRound(tournament);
+		showDetails(tournament);
+	});
+
 	const ul = document.createElement("ul");
 
 	for (const { _player1, _player2 } of matches) {
 		const li = document.createElement("li");
 
 		const player1Item = document.createElement("button");
+		player1Item.classList.add("btn", "btn-success");
+
 		player1Item.innerText = `${_player1._name} Wins`;
 		player1Item.addEventListener("click", () => {
 			finishMatch(tournament, _player1._name);
 			showDetails(tournament);
 		})
 		const drawItem = document.createElement("button");
+		drawItem.classList.add("btn", "btn-warning", "m-2");
 		drawItem.innerText = "Draw"
 		drawItem.addEventListener("click", () => {
 			finishMatch(tournament, _player1._name, true);
 			showDetails(tournament);
 		})
 		const player2Item = document.createElement("button");
+		player2Item.classList.add("btn", "btn-success");
+
 		player2Item.innerText = `${_player2._name} Wins`;
 		player2Item.addEventListener("click", () => {
 			finishMatch(tournament, _player2._name);
@@ -143,7 +158,10 @@ function showMatches(matches, tournament) {
 
 	const container = document.querySelector("#matches");
 	container.innerHTML = "";
+	container.appendChild(roundButton);
 	container.appendChild(ul);
 
 	return ul;
 }
+
+
