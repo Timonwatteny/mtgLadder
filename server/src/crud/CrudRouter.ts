@@ -1,7 +1,6 @@
 import CrudDb from "./CrudDb";
 import { Router } from "express";
 import Serializer from "./Serializer";
-import { serialize } from "v8";
 
 export type SubRoutes<T> = Map<string, SubRoute<T>>
 export type SubRoute<T> = {
@@ -18,17 +17,23 @@ export default class CrudRouter<T> {
 		serializer?: Serializer<T>,
 		router?: Router
 	}) {
+		if (config.subRoutes === undefined)
+			delete config.subRoutes
+
 		const fallback = {
 			subRoutes: new Map<string, SubRoute<T>>(),
 			dbGetter: (function () {
+
 				const db = new CrudDb<T>();
 				return (req: any) => db;
 			})(),
 			serializer: new Serializer<T>(),
-			router: Router()
+			router: Router({
+				mergeParams: true
+			})
 		}
 
-		return this.make(Object.assign(config, fallback));
+		return this.make(Object.assign(fallback, config));
 	}
 
 	private static make<T>({
@@ -54,13 +59,26 @@ export default class CrudRouter<T> {
 		private _serializer: Serializer<T>,
 		private _router: Router
 	) {
+
+		this.router.use((req, res, next) => {
+			const params = req.params;
+
+			for (const paramName in params) {
+				res.locals[paramName] = params[paramName]
+			}
+
+			next();
+		})
+
 		this.registerCrudRoutes();
-		// this.registerSubRoutes();
+		this.registerSubRoutes();
 	}
 
-	registerCrudRoutes() {
+	private registerCrudRoutes() {
+		console.log("CRUD urls");
+		console.log(`\tGET\t/`);
 		this.router.get(`/`, (req, res) => {
-			const db = this.dbGetter(req);
+			const db = this.getDb(req);
 
 			if (db)
 				res.json(db
@@ -70,6 +88,7 @@ export default class CrudRouter<T> {
 				res.status(404).send("");
 		});
 
+		console.log(`\tGET\t/:${this.name}/`);
 		this.router.get(`/:${this.name}/`, (req, res) => {
 			const t = this.getT(req);
 
@@ -79,8 +98,9 @@ export default class CrudRouter<T> {
 				res.status(404).send(`Invallid Id`);
 		});
 
+		console.log(`\tPOST\t/`);
 		this.router.post(`/`, (req, res) => {
-			const db = this.dbGetter(req);
+			const db = this.getDb(req);
 			const body = req.body;
 
 			if (body && db) {
@@ -97,8 +117,9 @@ export default class CrudRouter<T> {
 			}
 		});
 
+		console.log(`\tPUT\t/:${this.name}/`);
 		this.router.put(`/:${this.name}/`, (req, res) => {
-			const db = this.dbGetter(req);
+			const db = this.getDb(req);
 			const id = parseInt(req.params[this.name]);
 			const body = req.body;
 
@@ -119,8 +140,9 @@ export default class CrudRouter<T> {
 			res.send(``);
 		});
 
+		console.log(`\tDELETE\t/:${this.name}/`);
 		this.router.delete(`/:${this.name}/`, (req, res) => {
-			const db = this.dbGetter(req);
+			const db = this.getDb(req);
 			const id = parseInt(req.params[name]);
 
 			if (db && !db.delete(id))
@@ -130,15 +152,16 @@ export default class CrudRouter<T> {
 		});
 	}
 
-	registerSubRoutes() {
+	private registerSubRoutes() {
 		for (const [subRoute, { subRoutes, subRouteDbGetter }] of this.subRoutes.entries()) {
-			this.router.use(`/:${this.name}/${subRoute}/`, CrudRouter.makeFromConfig({
+			console.log(`/:${this.name}/${subRoute}/`);
+			this.router.use(`/:${this.name}/${subRoute}s/`, CrudRouter.makeFromConfig({
 				name: subRoute,
 				subRoutes,
 				dbGetter: req => {
 					const t = this.getT(req);
 					if (t)
-						return subRouteDbGetter(t.value)
+						return subRouteDbGetter(t.value);
 				}
 			}).router);
 		}
@@ -146,7 +169,7 @@ export default class CrudRouter<T> {
 
 	private getT(req: any) {
 		const id = parseInt(req.params[this.name]);
-		const db = this.dbGetter(req);
+		const db = this.getDb(req);
 		if (db)
 			return db.get(id)
 	}
@@ -155,7 +178,7 @@ export default class CrudRouter<T> {
 		return this._router;
 	}
 
-	get dbGetter() {
+	get getDb() {
 		return this._dbGetter;
 	}
 
