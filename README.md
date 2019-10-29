@@ -5,7 +5,7 @@
 Cleanup current code
 
 * [ ] Start using id's and crud opperations
-* [ ] Generify crud using `Identifiable<T>`
+* [x] Generify crud using `Identifiable<T>`
 
 Extra features
 
