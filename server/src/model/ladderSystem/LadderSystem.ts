@@ -1,5 +1,5 @@
 import Match from "./Match";
-import Player from "./Player";
+import Player from "../Player";
 import PointConfig from "./PointsConfig";
 
 export default class LadderSystem {

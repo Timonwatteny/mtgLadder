@@ -1,4 +1,4 @@
-import PointConfig from "./PointsConfig";
+import PointConfig from "./ladderSystem/PointsConfig";
 
 export default class Player {
 
