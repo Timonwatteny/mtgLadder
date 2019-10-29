@@ -2,7 +2,7 @@ import Identifiable from "./Identifiable";
 
 export default class CrudDb<T> {
 
-	private index = 0;
+	private index = -1;
 	private ts = new Map<number, Identifiable<T>>();
 
 	public all(): Identifiable<T>[] {
@@ -13,9 +13,10 @@ export default class CrudDb<T> {
 		return this.ts.get(id);
 	}
 
-	public add(t: T): any {
-		this.ts.set(this.index, new Identifiable(this.index, t));
+	public add(t: T): number {
 		this.index++;
+		this.ts.set(this.index, new Identifiable(this.index, t));
+		return this.index;
 	}
 
 	public update(id: number, t: T): boolean {

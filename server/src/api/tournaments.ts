@@ -1,8 +1,8 @@
 import { Router } from "express";
-import LadderSystem from "../ladderSystem/LadderSystem";
-import Player from "../ladderSystem/Player";
-import MatchEndState from "../ladderSystem/MatchEndState";
-import PointConfig from "../ladderSystem/PointsConfig";
+import LadderSystem from "../model/ladderSystem/LadderSystem";
+import Player from "../model/Player";
+import MatchEndState from "../model/ladderSystem/MatchEndState";
+import PointConfig from "../model/ladderSystem/PointsConfig";
 
 const router = Router();
 
